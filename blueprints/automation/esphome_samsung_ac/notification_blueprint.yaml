@@ -45,7 +45,7 @@ variables:
   error_message: >
     {% if error_code == 0 %}
       All AC units are operating normally. No errors detected.
-    {% if error_code == 101 %}
+    {% elif error_code == 101 %}
       Indoor unit communication error. Indoor unit cannot receive any data from the outdoor unit.
     {% elif error_code == 102 %}
       Communication error between indoor unit and outdoor unit. Displayed in indoor unit.
