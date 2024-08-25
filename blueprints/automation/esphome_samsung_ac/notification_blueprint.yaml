@@ -1,0 +1,47 @@
+blueprint:
+  name: Samsung AC Error Notification
+  description: Sends a notification when an error code is detected on a Samsung AC unit.
+  domain: automation
+  input:
+    samsung_ac_device:
+      name: Samsung AC Device
+      description: Select your Samsung AC device.
+      selector:
+        entity:
+          domain: climate
+    error_code_sensor:
+      name: Error Code Sensor
+      description: Select the sensor that monitors error codes.
+      selector:
+        entity:
+          domain: sensor
+    notification_device:
+      name: Notification Device
+      description: Select the device you want to receive notifications on.
+      selector:
+        device:
+          integration: mobile_app
+
+trigger:
+  platform: state
+  entity_id: !input error_code_sensor
+  to: 
+    - "201"
+    # Add additional error codes here...
+
+action:
+  - choose:
+      - conditions:
+          - condition: template
+            value_template: "{{ trigger.to_state.state == '201' }}"
+        sequence:
+          - service: notify.mobile_app_!input.notification_device
+            data:
+              message: "Communication error between indoor and outdoor units (installation number setting error, repeated indoor unit address, indoor unit communication cable error)"
+        # Add more conditions for other error codes
+    default:
+      - service: notify.mobile_app_!input.notification_device
+        data:
+          message: "Unknown error detected on your Samsung AC."
+
+mode: single
