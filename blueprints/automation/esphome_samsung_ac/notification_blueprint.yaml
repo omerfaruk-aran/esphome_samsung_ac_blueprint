@@ -38,8 +38,9 @@ condition:
     value_template: "{{ error_code in ['201'] }}"
 
 action:
-  - service: notify.mobile_app_{{ notify_device }}
+  - service: notify.mobile_app_omer15promax
     data:
+      target: "{{ device_attr(notify_device, 'name') | replace(' ', '_') }}"
       title: "Samsung AC Error Detected"
       message: "{{ error_message }}"
 
