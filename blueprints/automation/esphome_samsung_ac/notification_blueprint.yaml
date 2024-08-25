@@ -24,11 +24,7 @@ trigger:
 
 variables:
   error_code: "{{ trigger.to_state.state }}"
-  notify_services: >
-    {{ 
-      ["notify.mobile_app_" + device_attr(device, 'id') | replace(".", "_") for device in !input notify_devices.entity_id]
-      | join(", ") 
-    }}
+  notify_service: "{{ expand(!input notify_devices.entity_id) | map(attribute='entity_id') | join(', ') }}"
 
 sequence:
   - choose:
@@ -36,10 +32,9 @@ sequence:
           - condition: template
             value_template: "{{ error_code == '201' }}"
         sequence:
-          - service: "{{ notify_services }}"
+          - service: "{{ notify_service }}"
             data:
               title: "Samsung AC Error"
               message: "Communication error between indoor and outdoor units (error code 201)."
-
 
 mode: single
