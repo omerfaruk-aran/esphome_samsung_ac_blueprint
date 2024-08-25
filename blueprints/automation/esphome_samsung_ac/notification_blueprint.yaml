@@ -45,6 +45,8 @@ variables:
   error_message: >
     {% if error_code == 0 %}
       All AC units are operating normally. No errors detected.
+    {% elif error_code == "unavailable" %}
+      The device is currently offline. Please check the connection.
     {% elif error_code == 101 %}
       Indoor unit communication error. Indoor unit cannot receive any data from the outdoor unit.
     {% elif error_code == 102 %}
