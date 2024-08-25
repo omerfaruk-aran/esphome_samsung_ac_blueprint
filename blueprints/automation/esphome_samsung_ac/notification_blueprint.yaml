@@ -17,36 +17,6 @@ blueprint:
         device:
           filter:
             integration: mobile_app
-    title:
-      name: Notification Title
-      description: Title of the notification.
-      default: "Samsung AC Error"
-      selector:
-        text:
-    message_201:
-      name: Error 201 Message
-      description: Message for error code 201.
-      default: "Communication error between indoor and outdoor units."
-      selector:
-        text:
-    message_202:
-      name: Error 202 Message
-      description: Message for error code 202.
-      default: "Indoor unit sensor error."
-      selector:
-        text:
-    message_203:
-      name: Error 203 Message
-      description: Message for error code 203.
-      default: "Fan motor error."
-      selector:
-        text:
-    default_message:
-      name: Default Error Message
-      description: Message for unknown error codes.
-      default: "Unknown error detected."
-      selector:
-        text:
 
 trigger:
   - platform: state
@@ -54,6 +24,7 @@ trigger:
 
 variables:
   error_code: "{{ trigger.to_state.state }}"
+  notify_service: "notify.mobile_app_{{ device_attr(!input notify_device, 'name') | slugify }}"
 
 sequence:
   - choose:
@@ -61,30 +32,30 @@ sequence:
           - condition: template
             value_template: "{{ error_code == '201' }}"
         sequence:
-          - service: "notify.mobile_app_{{ device_attr(!input notify_device, 'name') | slugify }}"
+          - service: "{{ notify_service }}"
             data:
-              title: !input title
-              message: !input message_201
+              title: "Samsung AC Error"
+              message: "Communication error between indoor and outdoor units."
       - conditions:
           - condition: template
             value_template: "{{ error_code == '202' }}"
         sequence:
-          - service: "notify.mobile_app_{{ device_attr(!input notify_device, 'name') | slugify }}"
+          - service: "{{ notify_service }}"
             data:
-              title: !input title
-              message: !input message_202
+              title: "Samsung AC Error"
+              message: "Indoor unit sensor error."
       - conditions:
           - condition: template
             value_template: "{{ error_code == '203' }}"
         sequence:
-          - service: "notify.mobile_app_{{ device_attr(!input notify_device, 'name') | slugify }}"
+          - service: "{{ notify_service }}"
             data:
-              title: !input title
-              message: !input message_203
+              title: "Samsung AC Error"
+              message: "Fan motor error."
     default:
-      - service: "notify.mobile_app_{{ device_attr(!input notify_device, 'name') | slugify }}"
+      - service: "{{ notify_service }}"
         data:
-          title: !input title
-          message: !input default_message
+          title: "Samsung AC Error"
+          message: "Unknown error detected."
 
 mode: single
