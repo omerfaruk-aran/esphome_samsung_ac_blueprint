@@ -14,7 +14,7 @@ blueprint:
       description: Select the mobile app to receive the notifications.
       selector:
         entity:
-          integration: mobile_app
+          domain: mobile_app
 
 trigger:
   - platform: state
@@ -26,9 +26,7 @@ action:
           - condition: template
             value_template: "{{ trigger.to_state.state == '201' }}"
         sequence:
-          - service: >
-              {% set notify_service = "notify.mobile_app_" + device_attr(!input notify_device, "name") | replace(' ', '_') | lower %}
-              {{ notify_service }}
+          - service: "notify.mobile_app_{{ state_attr(!input notify_device, 'id') }}"
             data:
               message: "Communication error between indoor and outdoor units."
               title: "Samsung AC Error"
@@ -36,9 +34,7 @@ action:
           - condition: template
             value_template: "{{ trigger.to_state.state == '202' }}"
         sequence:
-          - service: >
-              {% set notify_service = "notify.mobile_app_" + device_attr(!input notify_device, "name") | replace(' ', '_') | lower %}
-              {{ notify_service }}
+          - service: "notify.mobile_app_{{ state_attr(!input notify_device, 'id') }}"
             data:
               message: "Indoor unit sensor error (open circuit, short circuit, etc.)."
               title: "Samsung AC Error"
@@ -46,16 +42,12 @@ action:
           - condition: template
             value_template: "{{ trigger.to_state.state == '203' }}"
         sequence:
-          - service: >
-              {% set notify_service = "notify.mobile_app_" + device_attr(!input notify_device, "name") | replace(' ', '_') | lower %}
-              {{ notify_service }}
+          - service: "notify.mobile_app_{{ state_attr(!input notify_device, 'id') }}"
             data:
               message: "Fan motor error."
               title: "Samsung AC Error"
     default:
-      - service: >
-          {% set notify_service = "notify.mobile_app_" + device_attr(!input notify_device, "name") | replace(' ', '_') | lower %}
-          {{ notify_service }}
+      - service: "notify.mobile_app_{{ state_attr(!input notify_device, 'id') }}"
         data:
           message: "Unknown error detected."
           title: "Samsung AC Error"
