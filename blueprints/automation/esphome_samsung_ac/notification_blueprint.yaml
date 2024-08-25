@@ -1,47 +1,66 @@
 blueprint:
   name: Samsung AC Error Notification
   description: >
-    This blueprint monitors a selected sensor for specific error codes from Samsung AC units and sends notifications to chosen devices. 
-    The notifications will include a detailed error message corresponding to the detected error code.
+    This blueprint monitors a selected sensor for specific error codes from Samsung AC units 
+    and sends notifications to a chosen device with a detailed error message.
   domain: automation
-  source_url: https://github.com/omerfaruk-aran/esphome_samsung_ac_blueprint
+  input:
+    sensor_entity:
+      name: Error Code Sensor
+      description: The sensor that monitors the AC error codes.
+      selector:
+        entity:
+          domain: sensor
+    
+    notify_device:
+      name: Device to notify
+      description: Device needs to run the official Home Assistant app to receive notifications.
+      selector:
+        device:
+          integration: mobile_app
+    
+    is_ios:
+      name: Is it an iOS device?
+      description: Toggle if your selected device runs iOS, default is Android.
+      selector:
+        boolean:
+      default: false
 
-input:
-  sensor_entity:
-    name: "Error Code Sensor"
-    description: "Select the sensor that monitors the AC error codes."
-    selector:
-      entity:
-        domain: sensor
-  notify_device:
-    name: "Device to notify"
-    description: "Device that will receive the error notifications. Requires Home Assistant app."
-    selector:
-      device:
-        integration: mobile_app
+    notification_title:
+      name: Notification title (Optional)
+      description: 'Default: "Samsung AC Error Detected"'
+      default: "Samsung AC Error Detected"
+      
+    notification_message:
+      name: Notification message (Optional)
+      description: 'Default: "{{ error_message }}"'
+      default: "{{ error_message }}"
+
+trigger:
+  platform: state
+  entity_id: !input sensor_entity
 
 variables:
-  error_code: "{{ states(sensor_entity) }}"
+  error_code: "{{ states[sensor_entity].state }}"
   error_message: >
     {% if error_code == '201' %}
       "Communication error between indoor and outdoor units."
     {% else %}
-      "Unknown error. Please refer to the AC unit's manual."
+      "Unknown error code: {{ error_code }}. Please refer to the AC unit's manual."
     {% endif %}
-
-trigger:
-  - platform: state
-    entity_id: !input sensor_entity
-
-condition:
-  - condition: template
-    value_template: "{{ error_code in ['201'] }}"
+  is_ios: !input is_ios
+  notification_title: !input notification_title
+  notification_message: !input notification_message
 
 action:
-  - service: notify.mobile_app_omer15promax
-    data:
-      target: "{{ device_attr(notify_device, 'name') | replace(' ', '_') }}"
-      title: "Samsung AC Error Detected"
-      message: "{{ error_message }}"
+  - device_id: !input notify_device
+    domain: mobile_app
+    type: notify
+    title: "{{ notification_title }}"
+    message: "{{ notification_message }}"
+    data: >
+      {% set ios_data = {} %}
+      {% set android_data = {} %}
+      {{ ios_data if is_ios else android_data }}
 
 mode: single
