@@ -6,7 +6,7 @@ blueprint:
   domain: automation
   source_url: https://github.com/omerfaruk-aran/esphome_samsung_ac_blueprint
 
-inputs:
+input:
   sensor_entity:
     name: "Error Code Sensor"
     description: "Select the sensor that monitors the AC error codes."
