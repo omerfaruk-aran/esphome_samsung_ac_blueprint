@@ -33,7 +33,7 @@ blueprint:
       
     notification_message:
       name: Notification message (Optional)
-      description: 'Default: "{{ error_code }} : {{ error_message }}"'
+      description: 'Default: {{ error_code }} : {{ error_message }}'
       default: "{{ error_code }} : {{ error_message }}"
 
 trigger:
