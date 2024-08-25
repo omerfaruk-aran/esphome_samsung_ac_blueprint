@@ -24,17 +24,21 @@ trigger:
     # Add additional error codes here...
 
 action:
-  - choose:
-      - conditions:
-          - condition: template
-            value_template: "{{ trigger.to_state.state == '201' }}"
-        sequence:
-          - service: >
-      {%- set notify_service = "notify.mobile_app_" + device_attr(!input notify_device, "name") | replace(" ", "_") -%}
+  - service: >
+      {% set notify_service = "notify.mobile_app_" + device_attr(notify_device, "name") | replace(" ", "_") %}
       {{ notify_service }}
-            data:
-              message: "Communication error between indoor and outdoor units (installation number setting error, repeated indoor unit address, indoor unit communication cable error)"
-              title: "Samsung AC Error"
+    data:
+      message: >
+        {% if trigger.to_state.state == '201' %}
+          Communication error between indoor and outdoor units (installation number setting error, repeated indoor unit address, indoor unit communication cable error).
+        {% elif trigger.to_state.state == '202' %}
+          Indoor unit sensor error (open circuit, short circuit, etc.).
+        {% elif trigger.to_state.state == '203' %}
+          Fan motor error.
+        {% else %}
+          Unknown error detected.
+        {% endif %}
+      title: "Samsung AC Error"
         # Add more conditions for other error codes
 
 mode: single
