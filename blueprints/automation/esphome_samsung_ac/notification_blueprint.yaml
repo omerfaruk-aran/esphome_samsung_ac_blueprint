@@ -43,34 +43,34 @@ trigger:
 variables:
   error_code: "{{ states[trigger.entity_id].state }}"
   error_message: >
-  {% if error_code == 0 %}
-    "All AC units are operating normally. No errors detected."
-  {% elif error_code == 101 %}
-    "Indoor unit communication error. Indoor unit cannot receive any data from the outdoor unit."
-  {% elif error_code == 102 %}
-    "Communication error between indoor unit and outdoor unit. Displayed in indoor unit."
-  {% elif error_code == 108 %}
-    "Error due to repeated address setting (When 2 or more devices have the same address within the system)."
-  {% elif error_code == 110 %}
-    "Communication error between Hydro unit HT (Main PBA) and Control kit PBA (Detection from the Control kit)."
-  {% elif error_code == 121 %}
-    "Error on indoor temperature sensor of indoor unit (Short or Open)."
-  {% elif error_code == 122 %}
-    "Error on EVA IN sensor of indoor unit (Short or Open)."
-  {% elif error_code == 123 %}
-    "Error on EVA OUT sensor of indoor unit (Short or Open)."
-  {% elif error_code == 128 %}
-    "EVA IN temperature sensor of indoor unit is detached from EVA IN pipe."
-  {% elif error_code == 129 %}
-    "EVA OUT temperature sensor of indoor unit is detached from EVA OUT pipe."
-  {% elif error_code == 130 %}
-    "Heat exchanger in/out sensors of indoor unit are detached."
-  {% elif error_code == 135 %}
-    "RPM feedback error of indoor unit's cleaning fan."
-  {% elif error_code == 151 %}
-    "Error due to opened EEV of indoor unit (2nd detection)."
-  {% elif error_code == 152 %}
-    "Error due to closed EEV of indoor unit (2nd detection)."
+    {% if error_code == 0 %}
+      "All AC units are operating normally. No errors detected."
+    {% elif error_code == 101 %}
+      "Indoor unit communication error. Indoor unit cannot receive any data from the outdoor unit."
+    {% elif error_code == 102 %}
+      "Communication error between indoor unit and outdoor unit. Displayed in indoor unit."
+    {% elif error_code == 108 %}
+      "Error due to repeated address setting (When 2 or more devices have the same address within the system)."
+    {% elif error_code == 110 %}
+      "Communication error between Hydro unit HT (Main PBA) and Control kit PBA (Detection from the Control kit)."
+    {% elif error_code == 121 %}
+      "Error on indoor temperature sensor of indoor unit (Short or Open)."
+    {% elif error_code == 122 %}
+      "Error on EVA IN sensor of indoor unit (Short or Open)."
+    {% elif error_code == 123 %}
+      "Error on EVA OUT sensor of indoor unit (Short or Open)."
+    {% elif error_code == 128 %}
+      "EVA IN temperature sensor of indoor unit is detached from EVA IN pipe."
+    {% elif error_code == 129 %}
+      "EVA OUT temperature sensor of indoor unit is detached from EVA OUT pipe."
+    {% elif error_code == 130 %}
+      "Heat exchanger in/out sensors of indoor unit are detached."
+    {% elif error_code == 135 %}
+      "RPM feedback error of indoor unit's cleaning fan."
+    {% elif error_code == 151 %}
+      "Error due to opened EEV of indoor unit (2nd detection)."
+    {% elif error_code == 152 %}
+      "Error due to closed EEV of indoor unit (2nd detection)."
   {% elif error_code == 153 %}
     "Error on floating switch of indoor unit (2nd detection)."
   {% elif error_code == 154 %}
