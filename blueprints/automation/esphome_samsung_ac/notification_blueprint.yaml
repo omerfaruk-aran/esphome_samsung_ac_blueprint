@@ -17,17 +17,19 @@ blueprint:
           integration: mobile_app
 
 trigger:
-  platform: state
-  entity_id: !input error_code_sensor
+  - platform: state
+    entity_id: !input error_code_sensor
+
+variables:
+  notify_service: >
+    {{ "notify.mobile_app_" + (device_attr(notify_device, "name") | lower | replace(" ", "_")) }}
+  error_code: "{{ trigger.to_state.state }}"
 
 action:
-  - variables:
-      notify_service: >
-        notify.mobile_app_{{ device_attr(!input notify_device, "name") | replace(" ", "_") }}
-      error_code: "{{ trigger.to_state.state }}"
   - choose:
       - conditions:
-          - "{{ error_code == '201' }}"
+          - condition: template
+            value_template: "{{ error_code == '201' }}"
         sequence:
           - service: "{{ notify_service }}"
             data:
