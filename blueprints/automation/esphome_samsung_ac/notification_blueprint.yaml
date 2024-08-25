@@ -41,7 +41,7 @@ trigger:
   entity_id: !input sensor_entity
 
 variables:
-  error_code: "{{ states[sensor_entity].state }}"
+  error_code: "{{ states[trigger.entity_id].state }}"
   error_message: >
     {% if error_code == '201' %}
       "Communication error between indoor and outdoor units."
