@@ -35,12 +35,12 @@ action:
           - condition: template
             value_template: "{{ trigger.to_state.state == '201' }}"
         sequence:
-          - service: !input notification_device
+          - service: !input notification_service
             data:
               message: "Communication error between indoor and outdoor units (installation number setting error, repeated indoor unit address, indoor unit communication cable error)"
         # Add more conditions for other error codes
     default:
-      - service: !input notification_device
+      - service: !input notification_service
         data:
           message: "Unknown error detected on your Samsung AC."
 
