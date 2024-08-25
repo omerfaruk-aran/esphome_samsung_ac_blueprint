@@ -33,8 +33,8 @@ blueprint:
       
     notification_message:
       name: Notification message (Optional)
-      description: 'Default: "{{ error_message }}"'
-      default: "{{ error_message }}"
+      description: 'Default: "{{ error_code }} : {{ error_message }}"'
+      default: "{{ error_code }} : {{ error_message }}"
 
 trigger:
   platform: state
@@ -44,7 +44,7 @@ variables:
   error_code: "{{ states[trigger.entity_id].state }}"
   error_message: >
     {% if error_code == 0 %}
-      "All AC units are operating normally. No errors detected."
+      All AC units are operating normally. No errors detected.
     {% elif error_code == 101 %}
       "Indoor unit communication error. Indoor unit cannot receive any data from the outdoor unit."
     {% elif error_code == 102 %}
