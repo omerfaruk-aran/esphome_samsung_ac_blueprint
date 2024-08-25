@@ -16,7 +16,7 @@ This repository contains a Blueprint for Home Assistant that integrates with the
 
 To add this Blueprint to your Home Assistant instance, click the button below:
 
-[![Add Blueprint to Home Assistant](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https://raw.githubusercontent.com/omerfaruk-aran/esphome_samsung_ac_blueprint/main/blueprints/automation/esphome_samsung_ac/notification_blueprint.yaml)
+[![Add Blueprint to Home Assistant](https://community-assets.home-assistant.io/original/4X/d/7/6/d7625545838a4970873f3a996172212440b7e0ae.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https://raw.githubusercontent.com/omerfaruk-aran/esphome_samsung_ac_blueprint/main/blueprints/automation/esphome_samsung_ac/notification_blueprint.yaml)
 
 ## Requirements
 - Home Assistant
