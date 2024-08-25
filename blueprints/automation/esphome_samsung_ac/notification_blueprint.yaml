@@ -24,7 +24,10 @@ trigger:
 
 variables:
   error_code: "{{ trigger.to_state.state }}"
-  notify_service: "notify.mobile_app_{{ device_attr(!input notify_device, 'name') | slugify }}"
+  notify_service: >
+    {%- for device in !input notify_devices.entity_id %}
+      notify.mobile_app_{{ device.split('.')[1] }}{% if not loop.last %}, {% endif %}
+    {%- endfor %}
 
 sequence:
   - choose:
@@ -35,27 +38,6 @@ sequence:
           - service: "{{ notify_service }}"
             data:
               title: "Samsung AC Error"
-              message: "Communication error between indoor and outdoor units."
-      - conditions:
-          - condition: template
-            value_template: "{{ error_code == '202' }}"
-        sequence:
-          - service: "{{ notify_service }}"
-            data:
-              title: "Samsung AC Error"
-              message: "Indoor unit sensor error."
-      - conditions:
-          - condition: template
-            value_template: "{{ error_code == '203' }}"
-        sequence:
-          - service: "{{ notify_service }}"
-            data:
-              title: "Samsung AC Error"
-              message: "Fan motor error."
-    default:
-      - service: "{{ notify_service }}"
-        data:
-          title: "Samsung AC Error"
-          message: "Unknown error detected."
+              message: "Communication error between indoor and outdoor units (error code 201)."
 
 mode: single
