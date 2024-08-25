@@ -337,6 +337,7 @@ variables:
       Error due to incorrect thermostat connection.
     {% elif error_code == 915 %}
       Error on DC fan (Non-operating).
+    {% elif error_code == "unknown" %}
     {% else %}
       Unknown error code: {{ error_code }}. Please refer to the AC unit's manual.
     {% endif %}
