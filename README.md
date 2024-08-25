@@ -6,6 +6,7 @@ This repository contains a Blueprint for Home Assistant that integrates with the
 - Monitors error codes from the Samsung AC unit.
 - Sends notifications to selected devices when an error is detected.
 - User-friendly setup through Home Assistant's Blueprint feature.
+- Comprehensive error code handling: All relevant error codes for Samsung AC units are included in this Blueprint, ensuring that users receive accurate and specific error messages corresponding to their AC unit's status.
 
 ## How to Use
 1. Import the Blueprint into Home Assistant.
