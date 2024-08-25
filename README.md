@@ -16,6 +16,8 @@ This repository contains a Blueprint for Home Assistant that integrates with the
 2. Select your Samsung AC unit, error code sensor, and notification device.
 3. The automation will trigger whenever an error code is detected and will send a notification with the corresponding error message.
 
+![Use](https://github.com/omerfaruk-aran/esphome_samsung_ac_blueprint/blob/main/images/screenshot.jpg?raw=true)
+
 ## Installation
 
 To add this Blueprint to your Home Assistant instance, click the button below:
