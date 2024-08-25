@@ -43,7 +43,7 @@ trigger:
 variables:
   error_code: "{{ states[trigger.entity_id].state }}"
   error_message: >
-    {% if error_code == '201' %}
+    {% if error_code == 201 %}
       "Communication error between indoor and outdoor units."
     {% else %}
       "Unknown error code: {{ error_code }}. Please refer to the AC unit's manual."
