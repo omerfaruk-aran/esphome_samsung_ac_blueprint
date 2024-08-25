@@ -19,26 +19,19 @@ blueprint:
 trigger:
   platform: state
   entity_id: !input error_code_sensor
-  to: 
-    - "201"
-    # Add additional error codes here...
 
 action:
-  - service: >
-      {% set notify_service = "notify.mobile_app_" + device_attr(notify_device, "name") | replace(" ", "_") %}
-      {{ notify_service }}
-    data:
-      message: >
-        {% if trigger.to_state.state == '201' %}
-          Communication error between indoor and outdoor units (installation number setting error, repeated indoor unit address, indoor unit communication cable error).
-        {% elif trigger.to_state.state == '202' %}
-          Indoor unit sensor error (open circuit, short circuit, etc.).
-        {% elif trigger.to_state.state == '203' %}
-          Fan motor error.
-        {% else %}
-          Unknown error detected.
-        {% endif %}
-      title: "Samsung AC Error"
-        # Add more conditions for other error codes
+  - variables:
+      notify_service: >
+        notify.mobile_app_{{ device_attr(!input notify_device, "name") | replace(" ", "_") }}
+      error_code: "{{ trigger.to_state.state }}"
+  - choose:
+      - conditions:
+          - "{{ error_code == '201' }}"
+        sequence:
+          - service: "{{ notify_service }}"
+            data:
+              message: "Communication error between indoor and outdoor units."
+              title: "Samsung AC Error"
 
 mode: single
